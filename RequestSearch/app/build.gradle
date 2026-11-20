@@ -2,6 +2,17 @@ plugins {
     id 'com.android.application'
 }
 
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.isFile()) {
+    localPropertiesFile.withInputStream { localProperties.load(it) }
+}
+
+def naverCredential = { String key ->
+    def value = localProperties.getProperty(key, '').trim()
+    return '"' + value.replace('\\', '\\\\').replace('"', '\\"') + '"'
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -12,6 +23,9 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+
+        buildConfigField 'String', 'NAVER_CLIENT_ID', naverCredential('NAVER_CLIENT_ID')
+        buildConfigField 'String', 'NAVER_CLIENT_SECRET', naverCredential('NAVER_CLIENT_SECRET')
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

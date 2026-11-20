@@ -17,3 +17,14 @@
 * Dialog를 상속받는 Custom Dialog 구현
 * SpannableStringBuilder를 사용하여 텍스트 처리
 
+### 네이버 API 설정
+
+`RequestSearch/local.properties`에 본인의 네이버 API 인증 값을 추가하고 Gradle을 동기화하세요. 기존 `sdk.dir` 설정은 그대로 두면 됩니다.
+
+```properties
+NAVER_CLIENT_ID=
+NAVER_CLIENT_SECRET=
+```
+
+`local.properties`는 Git에서 제외됩니다. 인증 값은 빌드된 APK에 포함되므로 배포용 앱에서는 서버를 통해 네이버 API를 호출하세요.
+

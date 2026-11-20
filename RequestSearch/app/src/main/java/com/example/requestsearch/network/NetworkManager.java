@@ -1,5 +1,6 @@
 package com.example.requestsearch.network;
 
+import com.example.requestsearch.BuildConfig;
 import com.example.requestsearch.XmlOrJsonConverterFactory;
 import com.example.requestsearch.listenerInterface.OnCallbackListener;
 import com.example.requestsearch.network.data.book.RssVO;
@@ -49,11 +50,14 @@ public class NetworkManager {
     OkHttpClient.Builder client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
         @Override
         public okhttp3.Response intercept(Chain chain) throws IOException {
-            Request request=chain
+            if (BuildConfig.NAVER_CLIENT_ID.isEmpty() || BuildConfig.NAVER_CLIENT_SECRET.isEmpty()) {
+                throw new IOException("Naver API credentials are missing from local.properties");
+            }
+            Request request = chain
                     .request()
                     .newBuilder()
-                    .addHeader("X-Naver-Client-Id","T92xNEy7zmxTD8fIFj6P")
-                    .addHeader("X-Naver-Client-Secret","1G1gY5aG5X")
+                    .addHeader("X-Naver-Client-Id", BuildConfig.NAVER_CLIENT_ID)
+                    .addHeader("X-Naver-Client-Secret", BuildConfig.NAVER_CLIENT_SECRET)
                     .build();
             return chain.proceed(request);
         }
